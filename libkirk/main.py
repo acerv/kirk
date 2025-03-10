@@ -338,9 +338,6 @@ def _start_session(
         else:
             SimpleUserInterface(args.no_colors)
 
-    # start event loop
-    exit_code = RC_OK
-
     # read tests regex filter
     run_pattern = args.run_pattern
     if run_pattern:
@@ -370,6 +367,7 @@ def _start_session(
             await libkirk.events.stop()
 
     loop = libkirk.get_event_loop()
+    exit_code = RC_OK
 
     try:
         loop.run_until_complete(
@@ -384,8 +382,7 @@ def _start_session(
         exit_code = RC_ERROR
     finally:
         try:
-            # at this point loop has been closed, so we can collect all
-            # tasks and cancel them
+            loop.run_until_complete(session.stop())
             libkirk.cancel_tasks(loop)
         except KeyboardInterrupt:
             pass
