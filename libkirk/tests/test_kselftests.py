@@ -3,6 +3,7 @@ Test kselftest implementations.
 """
 import os
 import pytest
+import pytest_asyncio
 from libkirk.data import Test
 from libkirk.host import HostSUT
 from libkirk.kselftests import KselftestFramework
@@ -26,7 +27,7 @@ class TestKselftestsFramework:
         "test_fourth"
     ]
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def sut(self):
         """
         Host SUT communication object.
@@ -76,7 +77,7 @@ class TestKselftestsFramework:
 
                 test_binfile.chmod(0o700)
 
-    def test_name(self, framework):
+    async def test_name(self, framework):
         """
         Test that name property is not empty.
         """

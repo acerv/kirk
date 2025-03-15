@@ -4,6 +4,7 @@ Unittests for the session module.
 import json
 import asyncio
 import pytest
+import pytest_asyncio
 from libkirk.session import Session
 from libkirk.tempfile import TempDir
 
@@ -11,7 +12,7 @@ from libkirk.tempfile import TempDir
 pytestmark = pytest.mark.asyncio
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def sut():
     """
     SUT communication object.
@@ -24,7 +25,7 @@ class _TestSession:
     Test for Session class.
     """
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def session(self, tmpdir, sut, dummy_framework):
         """
         Session communication object.

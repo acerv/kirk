@@ -4,6 +4,7 @@ Unittests for runner module.
 import re
 import asyncio
 import pytest
+import pytest_asyncio
 from libkirk.sut import TAINTED_MSG
 from libkirk.data import Test
 from libkirk.data import Suite
@@ -76,7 +77,7 @@ class MockSuiteScheduler(SuiteScheduler):
         return self._rebooted
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def sut():
     """
     SUT object.
@@ -93,7 +94,7 @@ class TestTestScheduler:
     Tests for TestScheduler.
     """
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def create_runner(self, sut, dummy_framework):
         def _callback(
                 timeout: float = 3600.0,
@@ -295,7 +296,7 @@ class TestSuiteScheduler:
     Tests for SuiteScheduler.
     """
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def create_runner(self, sut, dummy_framework):
         def _callback(
                 suite_timeout: float = 3600.0,

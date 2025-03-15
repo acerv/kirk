@@ -3,6 +3,7 @@ Test SUT implementations.
 """
 import os
 import pytest
+import pytest_asyncio
 from libkirk.qemu import QemuSUT
 from libkirk.sut import KernelPanicError
 from libkirk.tests.test_sut import _TestSUT
@@ -55,7 +56,7 @@ class _TestQemuSUT(_TestSUT):
         pytest.skip(reason="Coroutines don't support I/O file handling")
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def sut_isa(tmpdir):
     """
     Qemu instance using ISA.
@@ -76,7 +77,7 @@ async def sut_isa(tmpdir):
         await runner.stop(iobuffer=iobuff)
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def sut_virtio(tmpdir):
     """
     Qemu instance using VirtIO.
@@ -100,7 +101,7 @@ class TestQemuSUTISA(_TestQemuSUT):
     Test QemuSUT implementation using ISA protocol.
     """
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def sut(self, sut_isa):
         yield sut_isa
 
@@ -110,7 +111,7 @@ class TestQemuSUTVirtIO(_TestQemuSUT):
     Test QemuSUT implementation using VirtIO protocol.
     """
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def sut(self, sut_virtio):
         yield sut_virtio
 
@@ -120,7 +121,7 @@ class TestSessionQemuISA(_TestSession):
     Test Session using Qemu with ISA protocol.
     """
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def sut(self, sut_isa):
         yield sut_isa
 
@@ -130,7 +131,7 @@ class TestSessionQemuVirtIO(_TestSession):
     Test Session using Qemu with ISA protocol.
     """
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def sut(self, sut_virtio):
         yield sut_virtio
 
@@ -147,7 +148,7 @@ class TestQemuSUTBusybox(_TestQemuSUT):
     busybox initramfs image.
     """
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def sut(self, tmpdir):
         """
         Qemu instance using kernel/initrd.

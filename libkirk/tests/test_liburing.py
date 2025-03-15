@@ -3,6 +3,7 @@ Unittest for liburing module.
 """
 import stat
 import pytest
+import pytest_asyncio
 from libkirk.data import Test
 from libkirk.host import HostSUT
 from libkirk.liburing import Liburing
@@ -38,7 +39,7 @@ class TestLiburing:
 
         makefile.write('test_targets = ' + ' '.join(names))
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def sut(self):
         """
         Host SUT communication object.

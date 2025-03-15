@@ -4,6 +4,7 @@ Test Framework implementations.
 import os
 import json
 import pytest
+import pytest_asyncio
 from libkirk.data import Test
 from libkirk.ltp import LTPFramework
 from libkirk.host import HostSUT
@@ -18,7 +19,7 @@ class TestLTPFramework:
     TESTS_NUM = 6
     SUITES_NUM = 3
 
-    @pytest.fixture
+    @pytest_asyncio.fixture
     async def sut(self):
         """
         Host SUT communication object.
@@ -79,7 +80,7 @@ class TestLTPFramework:
         test_sh = testcases / "test.sh"
         test_sh.write("#!/bin/bash\necho $1 $2\n")
 
-    def test_name(self, framework):
+    async def test_name(self, framework):
         """
         Test that name property is not empty.
         """

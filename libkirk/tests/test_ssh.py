@@ -5,6 +5,7 @@ import os
 import subprocess
 import asyncio
 import pytest
+import pytest_asyncio
 from libkirk.sut import IOBuffer
 from libkirk.sut import KernelPanicError
 from libkirk.ssh import SSHSUT
@@ -38,7 +39,7 @@ def config():
     raise NotImplementedError()
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def sut(config):
     """
     SSH SUT communication object.
