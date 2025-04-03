@@ -13,8 +13,8 @@ import logging
 import contextlib
 from asyncio.subprocess import Process
 from libkirk.io import AsyncFile
+from libkirk.io import IOBuffer
 from libkirk.sut import SUT
-from libkirk.sut import IOBuffer
 from libkirk.sut import SUTError
 from libkirk.sut import KernelPanicError
 

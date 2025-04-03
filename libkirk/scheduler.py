@@ -13,8 +13,8 @@ import logging
 import libkirk
 import libkirk.data
 from libkirk import KirkException
+from libkirk.io import IOBuffer
 from libkirk.sut import SUT
-from libkirk.sut import IOBuffer
 from libkirk.sut import KernelPanicError
 from libkirk.data import Test
 from libkirk.data import Suite

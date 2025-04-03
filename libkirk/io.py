@@ -8,6 +8,18 @@
 import libkirk
 
 
+class IOBuffer:
+    """
+    IO stdout buffer. The API is similar to ``IO`` types.
+    """
+
+    async def write(self, data: str) -> None:
+        """
+        Write data.
+        """
+        raise NotImplementedError()
+
+
 class AsyncFile:
     """
     Handle files in asynchronous way by running operations inside a separate

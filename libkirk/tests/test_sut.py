@@ -7,7 +7,7 @@ import asyncio
 import logging
 import pytest
 import libkirk
-from libkirk.sut import IOBuffer
+from libkirk.io import IOBuffer
 from libkirk.sut import SUTError
 
 

@@ -10,9 +10,9 @@ import time
 import asyncio
 import logging
 import importlib
+from libkirk.io import IOBuffer
 from libkirk.sut import SUT
 from libkirk.sut import SUTError
-from libkirk.sut import IOBuffer
 from libkirk.ltx import Request
 from libkirk.ltx import Requests
 from libkirk.ltx import LTX

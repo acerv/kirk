@@ -8,6 +8,7 @@
 import re
 import asyncio
 from libkirk import KirkException
+from libkirk.io import IOBuffer
 from libkirk.plugin import Plugin
 
 
@@ -21,18 +22,6 @@ class KernelPanicError(SUTError):
     """
     Raised during kernel panic.
     """
-
-
-class IOBuffer:
-    """
-    IO stdout buffer. The API is similar to ``IO`` types.
-    """
-
-    async def write(self, data: str) -> None:
-        """
-        Write data.
-        """
-        raise NotImplementedError()
 
 
 TAINTED_MSG = [

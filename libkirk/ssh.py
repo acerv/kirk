@@ -10,9 +10,9 @@ import asyncio
 import logging
 import importlib
 import contextlib
+from libkirk.io import IOBuffer
 from libkirk.sut import SUT
 from libkirk.sut import SUTError
-from libkirk.sut import IOBuffer
 from libkirk.sut import KernelPanicError
 
 try:
@@ -225,7 +225,8 @@ class SSHSUT(SUT):
         self._stop = True
         try:
             if self._channels:
-                self._logger.info("Killing %d process(es)", len(self._channels))
+                self._logger.info("Killing %d process(es)",
+                                  len(self._channels))
 
                 for proc in self._channels:
                     proc.kill()
