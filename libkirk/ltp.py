@@ -42,7 +42,7 @@ class LTPFramework(Framework):
         self._max_runtime = None
         self._tc_folder = None
 
-    @ property
+    @property
     def config_help(self) -> dict:
         return {
             "root": "LTP install folder",
