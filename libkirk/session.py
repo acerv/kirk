@@ -16,8 +16,8 @@ import libkirk.data
 import libkirk.events
 from libkirk import KirkException
 from libkirk.io import AsyncFile
+from libkirk.io import IOBuffer
 from libkirk.sut import SUT
-from libkirk.sut import IOBuffer
 from libkirk.results import TestResults
 from libkirk.export import JSONExporter
 from libkirk.scheduler import SuiteScheduler
@@ -66,6 +66,7 @@ class Session:
         self._framework = kwargs.get("framework", None)
         self._sut = kwargs.get("sut", None)
         self._exec_timeout = kwargs.get("exec_timeout", 3600.0)
+        self._installer = kwargs.get("installer", None)
         self._stop = False
         self._exec_lock = asyncio.Lock()
         self._run_lock = asyncio.Lock()
@@ -73,6 +74,9 @@ class Session:
 
         if not self._tmpdir:
             raise ValueError("tmpdir is empty")
+
+        if not self._installer:
+            raise ValueError("installer is empty")
 
         if not self._framework:
             raise ValueError("framework is empty")
@@ -338,6 +342,9 @@ class Session:
         """
         Stop scheduler and SUT.
         """
+        if self._installer:
+            await self._installer.stop()
+
         if self._scheduler:
             await self._scheduler.stop()
 
@@ -402,6 +409,19 @@ class Session:
         except asyncio.TimeoutError:
             await self._scheduler.stop()
 
+    async def _install_framework(self, config: dict) -> None:
+        """
+        Install testing framework inside the SUT.
+        """
+        config["sut"] = self._sut
+
+        await libkirk.events.fire("install_started")
+
+        await self._installer.install(
+            buffer=RedirectSUTStdout(self._sut, True))
+
+        await libkirk.events.fire("install_completed")
+
     async def run(self, **kwargs: dict) -> None:
         """
         Run a new session and store results inside a JSON file.
@@ -423,6 +443,8 @@ class Session:
         :type randomize: bool
         :param runtime: for how long we want to run the session
         :type runtime: int
+        :param install: install configuration
+        :type install: dict
         """
         async with self._run_lock:
             await libkirk.events.fire("session_started", self._tmpdir.abspath)
@@ -434,6 +456,10 @@ class Session:
 
             try:
                 await self._start_sut()
+
+                install_config = kwargs.get("install", {})
+                if install_config:
+                    await self._install_framework(install_config)
 
                 command = kwargs.get("command", None)
                 if command:

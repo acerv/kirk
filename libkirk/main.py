@@ -25,12 +25,16 @@ from libkirk.ui import VerboseUserInterface
 from libkirk.ui import ParallelUserInterface
 from libkirk.session import Session
 from libkirk.tempfile import TempDir
+from libkirk.installer import Installer
 
 # runtime loaded SUT(s)
 LOADED_SUT = []
 
 # runtime loaded Framework(s)
 LOADED_FRAMEWORK = []
+
+# runtime loaded installer(s)
+LOADED_INSTALLERS = []
 
 # return codes of the application
 RC_OK = 0
@@ -116,6 +120,13 @@ def _framework_config(value: str) -> dict:
     return _dict_config("framework", LOADED_FRAMEWORK, value)
 
 
+def _installer_config(value: str) -> dict:
+    """
+    Return an installer configuration according with input string.
+    """
+    return _dict_config("install", LOADED_INSTALLERS, value)
+
+
 def _env_config(value: str) -> dict:
     """
     Return an environment configuration dictionary, parsing strings such as
@@ -190,6 +201,14 @@ def _discover_frameworks(path: str) -> None:
     """
     objs = libkirk.plugin.discover(Framework, path)
     LOADED_FRAMEWORK.extend(objs)
+
+
+def _discover_installers(path: str) -> None:
+    """
+    Discover new Installer implementations.
+    """
+    objs = libkirk.plugin.discover(Installer, path)
+    LOADED_INSTALLERS.extend(objs)
 
 
 def _get_plugin(plugins: list, name: str) -> object:
@@ -284,6 +303,31 @@ def _get_framework(
     return framework
 
 
+def _get_installer(
+        args: argparse.Namespace,
+        parser: argparse.ArgumentParser,
+        tmpdir: TempDir,
+        sut: SUT) -> Installer:
+    """
+    Create and installer object.
+    """
+    config = args.install.copy()
+    config["tmpdir"] = tmpdir.abspath
+    config["sut"] = sut
+    name = args.install["name"]
+
+    installer = _get_plugin(LOADED_INSTALLERS, name)
+    if not installer:
+        parser.error(f"'{name}' installer is not available")
+
+    try:
+        installer.setup(**config)
+    except FrameworkError as err:
+        parser.error(str(err))
+
+    return installer
+
+
 # pylint: disable=too-many-statements
 def _start_session(
         args: argparse.Namespace,
@@ -318,11 +362,13 @@ def _start_session(
     # create SUT and Framework objects
     sut = _get_sut(args, parser, tmpdir)
     framework = _get_framework(args, parser)
+    installer = _get_installer(args, parser, tmpdir, sut)
 
     # start session
     session = Session(
         sut=sut,
         framework=framework,
+        installer=installer,
         tmpdir=tmpdir,
         exec_timeout=args.exec_timeout,
         suite_timeout=args.suite_timeout,
@@ -364,6 +410,7 @@ def _start_session(
                 skip_tests=skip_tests,
                 randomize=args.randomize,
                 runtime=args.runtime,
+                install=args.install,
             )
         except asyncio.CancelledError:
             await session.stop()
@@ -401,6 +448,7 @@ def run(cmd_args: list = None) -> None:
     currdir = os.path.dirname(os.path.realpath(__file__))
     _discover_sut(currdir)
     _discover_frameworks(currdir)
+    _discover_installers(currdir)
 
     parser = argparse.ArgumentParser(
         description='Kirk - All-in-one Linux Testing Framework')
@@ -522,7 +570,13 @@ def run(cmd_args: list = None) -> None:
         action="store_true",
         help="Force parallelization execution of all tests")
 
-    # output arguments
+    install_opts = parser.add_argument_group('Install options')
+    install_opts.add_argument(
+        "--install",
+        "-y",
+        type=_installer_config,
+        help="Install testing framework. For help please use --install help")
+
     # parse comand line
     args = parser.parse_args(cmd_args)
 
@@ -532,6 +586,10 @@ def run(cmd_args: list = None) -> None:
 
     if args.framework and "help" in args.framework:
         print(args.framework["help"])
+        parser.exit(RC_OK)
+
+    if args.install and "help" in args.install:
+        print(args.install["help"])
         parser.exit(RC_OK)
 
     if args.json_report and os.path.exists(args.json_report):
