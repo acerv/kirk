@@ -42,11 +42,11 @@ class TestLTX:
 
         proc = await asyncio.subprocess.create_subprocess_shell(
             TEST_LTX_BINARY,
-            stdin=stdin,
-            stdout=stdout)
+            stdin=stdin_path,
+            stdout=stdout_path)
 
         try:
-            async with LTX(stdin, stdout) as handle:
+            async with LTX(stdin_path, stdout_path) as handle:
                 yield handle
         finally:
             proc.kill()
@@ -281,17 +281,17 @@ async def sut(tmpdir):
         stdin=stdin,
         stdout=stdout)
 
-    sut = LTXSUT()
-    sut.setup(
+    _sut = LTXSUT()
+    _sut.setup(
         cwd=str(tmpdir),
-        env=dict(HELLO="WORLD"),
+        env={"HELLO": "WORLD"},
         stdin=stdin_path,
         stdout=stdout_path)
 
-    yield sut
+    yield _sut
 
-    if await sut.is_running:
-        await sut.stop()
+    if await _sut.is_running:
+        await _sut.stop()
 
     proc.kill()
 
@@ -301,7 +301,7 @@ class TestLTXSUT(_TestSUT):
     Test HostSUT implementation.
     """
 
-    async def test_fetch_file_stop(self):
+    async def test_fetch_file_stop(self, _):
         pytest.skip(reason="LTX doesn't support stop for GET_FILE")
 
 

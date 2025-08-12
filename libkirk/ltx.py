@@ -5,11 +5,11 @@
 
 .. moduleauthor:: Andrea Cervesato <andrea.cervesato@suse.com>
 """
-import os
 import asyncio
 import logging
 import typing
 import libkirk
+from libkirk.io import AsyncFile
 
 try:
     import msgpack
@@ -443,7 +443,7 @@ class LTX:
     This class communicates with LTX by processing given requests.
     Typical usage is the following:
     ```
-    async with LTX(stdin_fd, stdout_fd) as ltx:
+    async with LTX(stdin_path, stdout_path) as ltx:
         # create requests
         request1 = Requests.execute("echo 'hello world' > myfile")
         request2 = Requests.get_file("myfile")
@@ -461,12 +461,12 @@ class LTX:
     """
     BUFFSIZE = 1 << 21
 
-    def __init__(self, stdin_fd: int, stdout_fd: int) -> None:
+    def __init__(self, stdin: str, stdout: str) -> None:
         self._logger = logging.getLogger("ltx")
         self._requests = []
         self._stop = False
-        self._stdin_fd = stdin_fd
-        self._stdout_fd = stdout_fd
+        self._stdin = stdin
+        self._stdout = stdout
         self._lock = asyncio.Lock()
         self._task = None
         self._messages = []
@@ -503,8 +503,6 @@ class LTX:
             return
 
         self._logger.info("Connecting to LTX")
-
-        os.set_blocking(self._stdout_fd, False)
 
         self._exception = None
         self._task = libkirk.create_task(self._polling())
@@ -548,13 +546,14 @@ class LTX:
             raise LTXError("Client is not connected to LTX")
 
         async with self._lock:
-            self._logger.info("Sending requests")
-            self._requests.extend(requests)
+            async with AsyncFile(self._stdout, 'w') as afile:
+                self._logger.info("Sending requests")
+                self._requests.extend(requests)
 
-            data = [await req.pack() for req in requests]
-            tosend = b''.join(data)
+                data = [await req.pack() for req in requests]
+                tosend = b''.join(data)
 
-            await self._write(bytes(tosend))
+                await afile.write(bytes(tosend))
 
     async def gather(self, requests: list) -> dict:
         """
@@ -583,33 +582,6 @@ class LTX:
 
         return replies
 
-    async def _read(self, size: int) -> bytes:
-        """
-        Blocking I/O method to read from stdout.
-        """
-        data = None
-        try:
-            data = await libkirk.to_thread(os.read, self._stdout_fd, size)
-        except BlockingIOError:
-            # we ensure other threads will take action if reading
-            # procedure is too fast for this process
-            os.sched_yield()
-
-        return data
-
-    async def _write(self, data: bytes) -> None:
-        """
-        Blocking I/O method to write on stdin.
-        """
-        towrite = len(data)
-        try:
-            wrote = await libkirk.to_thread(os.write, self._stdin_fd, data)
-
-            if towrite != wrote:
-                raise LTXError(f"Wrote {wrote} bytes but expected {towrite}")
-        except BrokenPipeError:
-            pass
-
     # pylint: disable=too-many-nested-blocks
     async def _polling(self) -> None:
         """
@@ -621,31 +593,32 @@ class LTX:
         unpacker = msgpack.Unpacker(raw=False)
 
         try:
-            while not self._stop:
-                data = await self._read(self.BUFFSIZE)
-                if not data:
-                    continue
+            async with AsyncFile(self._stdin, 'r') as afile:
+                while not self._stop:
+                    data = await afile.read(self.BUFFSIZE)
+                    if not data:
+                        continue
 
-                self._logger.debug("Unpacking bytes: %s", data)
+                    self._logger.debug("Unpacking bytes: %s", data)
 
-                unpacker.feed(data)
+                    unpacker.feed(data)
 
-                while True:
-                    try:
-                        msg = unpacker.unpack()
-                        if not msg:
-                            continue
+                    while True:
+                        try:
+                            msg = unpacker.unpack()
+                            if not msg:
+                                continue
 
-                        self._logger.info("Received message: %s", msg)
-                        if not isinstance(msg, list):
-                            raise LTXError("Message must be an array")
+                            self._logger.info("Received message: %s", msg)
+                            if not isinstance(msg, list):
+                                raise LTXError("Message must be an array")
 
-                        if msg[0] == Request.ERROR:
-                            raise LTXError(msg[1])
+                            if msg[0] == Request.ERROR:
+                                raise LTXError(msg[1])
 
-                        await self._feed_requests(msg)
-                    except msgpack.OutOfData:
-                        break
+                            await self._feed_requests(msg)
+                        except msgpack.OutOfData:
+                            break
         except LTXError as err:
             self._exception = err
         finally:
