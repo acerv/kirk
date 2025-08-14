@@ -8,20 +8,10 @@
 import re
 import asyncio
 from libkirk.plugin import Plugin
+from libkirk.protocol import IOBuffer
+from libkirk.protocol import ProtocolHandler
 from libkirk.errors import SUTError
 from libkirk.errors import KirkException
-
-
-class IOBuffer:
-    """
-    IO stdout buffer. The API is similar to ``IO`` types.
-    """
-
-    async def write(self, data: str) -> None:
-        """
-        Write data.
-        """
-        raise NotImplementedError()
 
 
 TAINTED_MSG = [
@@ -46,7 +36,7 @@ TAINTED_MSG = [
 ]
 
 
-class SUT(Plugin):
+class SUT(Plugin, ProtocolHandler):
     """
     SUT abstraction class. It could be a remote host, a local host, a virtual
     machine instance, etc.
@@ -63,75 +53,6 @@ class SUT(Plugin):
     def parallel_execution(self) -> bool:
         """
         If True, SUT supports commands parallel execution.
-        """
-        raise NotImplementedError()
-
-    @property
-    async def is_running(self) -> bool:
-        """
-        Return True if SUT is running.
-        """
-        raise NotImplementedError()
-
-    async def ping(self) -> float:
-        """
-        If SUT is replying and it's available, ping will return time needed to
-        wait for SUT reply.
-        :returns: float
-        """
-        raise NotImplementedError()
-
-    async def communicate(self, iobuffer: IOBuffer = None) -> None:
-        """
-        Start communicating with the SUT.
-        :param iobuffer: buffer used to write SUT stdout
-        :type iobuffer: IOBuffer
-        """
-        raise NotImplementedError()
-
-    async def stop(self, iobuffer: IOBuffer = None) -> None:
-        """
-        Stop the current SUT session.
-        :param iobuffer: buffer used to write SUT stdout
-        :type iobuffer: IOBuffer
-        """
-        raise NotImplementedError()
-
-    async def run_command(
-            self,
-            command: str,
-            cwd: str = None,
-            env: dict = None,
-            iobuffer: IOBuffer = None) -> dict:
-        """
-        Coroutine to run command on target.
-        :param command: command to execute
-        :type command: str
-        :param cwd: current working directory
-        :type cwd: str
-        :param env: environment variables
-        :type env: dict
-        :param iobuffer: buffer used to write SUT stdout
-        :type iobuffer: IOBuffer
-        :returns: dictionary containing command execution information
-
-            {
-                "command": <str>,
-                "returncode": <int>,
-                "stdout": <str>,
-                "exec_time": <float>,
-            }
-
-            If None is returned, then callback failed.
-        """
-        raise NotImplementedError()
-
-    async def fetch_file(self, target_path: str) -> bytes:
-        """
-        Fetch file from target path and return data from target path.
-        :param target_path: path of the file to download from target
-        :type target_path: str
-        :returns: bytes contained in target_path
         """
         raise NotImplementedError()
 

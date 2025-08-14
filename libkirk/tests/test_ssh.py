@@ -6,8 +6,8 @@ import subprocess
 import asyncio
 import pytest
 import pytest
-from libkirk.sut import IOBuffer
 from libkirk.ssh import SSHSUT
+from libkirk.protocol import IOBuffer
 from libkirk.errors import KernelPanicError
 from libkirk.tests.test_sut import _TestSUT
 from libkirk.tests.test_session import _TestSession

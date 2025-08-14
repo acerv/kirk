@@ -14,7 +14,7 @@ import contextlib
 from asyncio.subprocess import Process
 from libkirk.io import AsyncFile
 from libkirk.sut import SUT
-from libkirk.sut import IOBuffer
+from libkirk.protocol import IOBuffer
 from libkirk.errors import SUTError
 from libkirk.errors import KernelPanicError
 

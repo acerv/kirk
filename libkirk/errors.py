@@ -50,7 +50,13 @@ class ExporterError(KirkException):
     """
 
 
-class LTXError(KirkException):
+class ProtocolError(KirkException):
+    """
+    Raised when an error occurs during protocol communication.
+    """
+
+
+class LTXError(ProtocolError):
     """
     Raised when an error occurs during LTX execution.
     """

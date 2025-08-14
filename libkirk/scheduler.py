@@ -13,11 +13,11 @@ import logging
 import libkirk
 import libkirk.data
 from libkirk.sut import SUT
-from libkirk.sut import IOBuffer
 from libkirk.data import Test
 from libkirk.data import Suite
 from libkirk.results import TestResults
 from libkirk.results import SuiteResults
+from libkirk.protocol import IOBuffer
 from libkirk.errors import KirkException
 from libkirk.errors import KernelPanicError
 from libkirk.errors import KernelTaintedError

@@ -16,10 +16,10 @@ import libkirk.data
 import libkirk.events
 from libkirk.io import AsyncFile
 from libkirk.sut import SUT
-from libkirk.sut import IOBuffer
 from libkirk.results import TestResults
 from libkirk.export import JSONExporter
 from libkirk.scheduler import SuiteScheduler
+from libkirk.protocol import IOBuffer
 from libkirk.errors import KirkException
 
 

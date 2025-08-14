@@ -11,7 +11,7 @@ import logging
 import importlib
 import contextlib
 from libkirk.sut import SUT
-from libkirk.sut import IOBuffer
+from libkirk.protocol import IOBuffer
 from libkirk.errors import SUTError
 from libkirk.errors import KernelPanicError
 
