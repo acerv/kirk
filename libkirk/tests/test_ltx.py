@@ -41,8 +41,12 @@ class TestLTX:
         stdin = os.open(infile, os.O_RDWR | os.O_NONBLOCK)
         stdout = os.open(outfile, os.O_RDWR)
 
-        proc = await asyncio.subprocess.create_subprocess_shell(
-            TEST_LTX_BINARY, stdin=stdin, stdout=stdout
+        proc = await asyncio.subprocess.create_subprocess_exec(
+            TEST_LTX_BINARY,
+            shell=False,
+            bufsize=0,
+            stdin=stdin,
+            stdout=stdout,
         )
 
         try:
@@ -50,6 +54,7 @@ class TestLTX:
                 yield handle
         finally:
             proc.kill()
+            await proc.wait()
 
     async def test_version(self, ltx):
         """
@@ -272,8 +277,12 @@ async def sut(tmpdir):
     stdin = os.open(infile, os.O_RDONLY | os.O_NONBLOCK)
     stdout = os.open(outfile, os.O_RDWR)
 
-    proc = await asyncio.subprocess.create_subprocess_shell(
-        TEST_LTX_BINARY, stdin=stdin, stdout=stdout
+    proc = await asyncio.subprocess.create_subprocess_exec(
+        TEST_LTX_BINARY,
+        shell=False,
+        bufsize=0,
+        stdin=stdin,
+        stdout=stdout,
     )
 
     sut = LTXSUT()
@@ -285,6 +294,7 @@ async def sut(tmpdir):
         await sut.stop()
 
     proc.kill()
+    await proc.wait()
 
 
 class TestLTXSUT(_TestSUT):
