@@ -161,6 +161,8 @@ class SSHComChannel(ComChannel):
 
         self._logger.info("Initialize SSH connection")
 
+        asyncssh.logging.set_log_level(logging.DEBUG)
+
         self._host = libkirk.types.dict_item(kwargs, "host", str, default="localhost")
         self._reset_cmd = libkirk.types.dict_item(
             kwargs, "reset_cmd", str, default=None
