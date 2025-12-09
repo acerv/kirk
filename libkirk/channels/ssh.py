@@ -271,6 +271,10 @@ class SSHComChannel(ComChannel):
 
             max_sessions = await self._read_max_sessions()
 
+            # BUG: workaround for systems which are failing with parallel
+            # commands executions
+            max_sessions = 1
+
             self._session_sem = asyncio.Semaphore(max_sessions)
         except (asyncssh.Error, ConnectionError) as err:
             if not self._stop:
