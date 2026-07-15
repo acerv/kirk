@@ -370,8 +370,13 @@ class Session:
         """
         Schedule tests only once.
         """
-        await self._scheduler.schedule(suites_obj)
-        self._results.extend(self._scheduler.results)
+        try:
+            await self._scheduler.schedule(suites_obj)
+        finally:
+            # Collect results even if scheduling aborts mid-suite (e.g. a
+            # CommunicationError on SUT connection loss), so a partial run
+            # still produces a report. See gh#linux-test-project/kirk#102.
+            self._results.extend(self._scheduler.results)
 
     async def _schedule_infinite(self, suites_obj: List[Suite]) -> None:
         """
