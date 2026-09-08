@@ -49,9 +49,8 @@ class AsyncFile(AsyncContextManager):
         exc_type: Optional[Type[BaseException]],
         exc_value: Optional[BaseException],
         traceback: Optional[TracebackType],
-    ) -> bool:
+    ) -> None:
         await self.close()
-        return True
 
     def __aiter__(self) -> Any:
         return self
