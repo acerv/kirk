@@ -3,23 +3,58 @@
 Releases
 ========
 
-Releases follow the semantic versioning ``Major.Minor.Patch``.
+Releases follow semantic versioning ``Major.Minor.Patch`` and are scheduled
+when there are sufficient new features or important bug fixes.
 
-.. note::
+Release procedure
+-----------------
 
-   Releases are scheduled when there are "enough" features or important bugfixes
-   which can impact kirk usability.
+Pre-release
+~~~~~~~~~~~
 
-Setting up a new release
-------------------------
+1. Bump ``libkirk.__version__`` in ``libkirk/__init__.py`` to the new version.
+2. Commit the version bump, push, and verify that all CI workflows pass.
+3. Manually run QEMU integration tests:
 
-These are the steps which need to be completed before a new release:
+   .. code-block:: bash
 
-* bump ``libkirk.__version__`` variable to the new kirk version
-* verify that CI has been completed and passing after pushing
-* manually test Qemu support via ``libkirk/tests/test_qemu.py``
-* create a package via ``python -m build`` command
-* push package to PyPI via ``twine upload dist/kirk-<version>.tar.gz`` command
-* create and publish a release on GitHub
-* update changelog documentation via ``./utils/update_changelog.py`` and commit
-* upgrade kirk version inside the LTP project
+      pytest libkirk/tests/test_qemu.py
+
+Packaging and publishing
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+4. Clean previous build artifacts and create the package:
+
+   .. code-block:: bash
+
+      rm -rf dist/
+      python3 -m build
+
+5. Upload the package to PyPI:
+
+   .. code-block:: bash
+
+      twine upload dist/kirk-<version>*
+
+6. Tag the release and push the tag to the remote repository:
+
+   .. code-block:: bash
+
+      git tag v<version>
+      git push origin v<version>
+
+7. Create and publish the release on GitHub with release highlights.
+
+Post-release
+~~~~~~~~~~~~
+
+8. Update the documentation changelog and commit the changes:
+
+   .. code-block:: bash
+
+      ./utils/update_changelog.py
+      git add doc/changelog.rst
+      git commit -s -m "doc: update changelog for v<version>"
+      git push origin master
+
+9. Upgrade the kirk version reference inside the `LTP <https://github.com/linux-test-project/ltp>`_ project.
