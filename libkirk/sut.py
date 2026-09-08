@@ -447,7 +447,7 @@ def discover(path: str, extend: bool = True) -> None:
     :param extend: If True, it will add new discovered SUT on top of the
         ones already found. If False, previous discovered SUT will be
         cleared.
-    :type param: bool
+    :type extend: bool
     """
     global _SUT
 
