@@ -36,11 +36,11 @@ Packaging and publishing
 
       twine upload dist/kirk-<version>*
 
-6. Tag the release and push the tag to the remote repository:
+6. Tag the release with a signed tag and push:
 
    .. code-block:: bash
 
-      git tag v<version>
+      git tag -s v<version> -m "Version <version>"
       git push origin v<version>
 
 7. Create and publish the release on GitHub with release highlights.
