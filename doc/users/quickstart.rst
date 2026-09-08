@@ -3,16 +3,17 @@
 Start using kirk
 ================
 
-The tool works out of the box by running ``kirk`` script.
-Minimum python requirement is 3.6+ and *optional* dependencies are the following:
+Installation
+------------
 
-- :doc:`ssh` (requires `asyncssh <https://pypi.org/project/asyncssh/>`_)
-- :doc:`ltx` (requires `msgpack <https://pypi.org/project/msgpack/>`_)
+kirk is available on `PyPI <https://pypi.org/project/kirk>`_ and can be
+installed using ``pip``:
 
-kirk will detect if dependencies are installed and activate the corresponding
-support.
+.. code-block:: bash
 
-To use kirk via git repository:
+    pip install --user kirk
+
+To install from the git repository:
 
 .. code-block:: bash
 
@@ -20,40 +21,41 @@ To use kirk via git repository:
     cd kirk
     pip install .
 
-    kirk --help
-
-kirk is also present in `PyPI <https://pypi.org/project/kirk>`_ and it can be
-installed via ``pip`` command:
-
-.. code-block:: bash
-
-   pip install --user kirk
-
 Basic usage
 -----------
 
-Some basic commands are the following:
+Run the LTP ``syscalls`` test suite on the host:
 
 .. code-block:: bash
 
-    # run LTP syscalls testing suite on host
     kirk --run-suite syscalls
 
-    # run LTP syscalls testing suite in parallel on host using 16 workers
+Run tests in parallel using 16 workers:
+
+.. code-block:: bash
+
     kirk --run-suite syscalls --workers 16
 
-    # pass environment variables (list of key=value separated by ':')
+Pass environment variables (colon-separated ``KEY=VALUE`` pairs):
+
+.. code-block:: bash
+
     kirk --run-suite net.features \
          --env 'VIRT_PERF_THRESHOLD=180:LTP_NET_FEATURES_IGNORE_PERFORMANCE_FAILURE=1'
 
-It's possible to run a single command before running testing suites using
-``--run-command`` option as following:
+Run a custom command before executing the test suite:
 
 .. code-block:: bash
 
     kirk --run-command ./setup_sut.sh \
          --run-suite syscalls
 
-For remote execution and virtual machines, see :doc:`qemu`, :doc:`ssh`, and
-:doc:`ltx`.
+Optional features
+-----------------
 
+Kirk requires Python 3.6+ and works out of the box for host execution.
+Optional features are automatically detected when dependencies are installed:
+
+* :doc:`ssh`: Remote execution via SSH (requires `asyncssh <https://pypi.org/project/asyncssh/>`_)
+* :doc:`ltx`: Remote execution via LTX (requires `msgpack <https://pypi.org/project/msgpack/>`_)
+* :doc:`qemu`: Virtual machine testing via QEMU
