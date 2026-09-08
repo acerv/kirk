@@ -203,7 +203,7 @@ class LTPFramework(Framework):
                 self._logger.info("max_runtime is bigger than %f", self._max_runtime)
 
                 return False
-        except TypeError:
+        except (ValueError, TypeError):
             self._logger.error("metadata contains wrong max_runtime type: %s", runtime)
 
         return True
