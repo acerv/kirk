@@ -25,13 +25,16 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
-      run: python3 -m pip install ruff pyrefly msgpack asyncssh
+      run: python3 -m pip install .[testing,ssh,ltx] ruff pyrefly
 
     - name: Test kirk
       run: ./kirk --help
 
-    - name: Static Linting
+    - name: Static formatting
+      run: ruff format --check
+
+    - name: Static linting
       run: ruff check
 
     - name: Static type checking
-      run: pyrefly check --project-excludes="*test*" libkirk
+      run: pyrefly check libkirk
