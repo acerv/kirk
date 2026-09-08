@@ -58,3 +58,8 @@ Post-release
       git push origin master
 
 9. Upgrade the kirk version reference inside the `LTP <https://github.com/linux-test-project/ltp>`_ project.
+10. Generate and send the release announcement email to the LTP mailing list:
+
+    .. code-block:: bash
+
+       ./utils/generate_release_email.py
