@@ -10,7 +10,7 @@ Prerequisites
 -------------
 
 SSH support requires the `asyncssh <https://pypi.org/project/asyncssh/>`_
-package:
+package, which can be installed via the ``ssh`` extra:
 
 .. code-block:: bash
 
@@ -20,7 +20,7 @@ or directly:
 
 .. code-block:: bash
 
-    pip install 'asyncssh<=2.22.0'
+    pip install asyncssh
 
 Configuration options
 ---------------------

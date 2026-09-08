@@ -9,7 +9,8 @@ LTX communication protocol.
 Prerequisites
 -------------
 
-LTX support requires the `msgpack <https://pypi.org/project/msgpack/>`_ package:
+LTX support requires the `msgpack <https://pypi.org/project/msgpack/>`_ package,
+which can be installed via the ``ltx`` extra:
 
 .. code-block:: bash
 
@@ -19,7 +20,7 @@ or directly:
 
 .. code-block:: bash
 
-    pip install 'msgpack<=1.1.2'
+    pip install msgpack
 
 Configuration options
 ---------------------

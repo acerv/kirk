@@ -13,6 +13,12 @@ installed using ``pip``:
 
     pip install --user kirk
 
+To include optional features such as SSH or LTX:
+
+.. code-block:: bash
+
+    pip install --user 'kirk[ssh,ltx]'
+
 To install from the git repository:
 
 .. code-block:: bash
