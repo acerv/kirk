@@ -45,7 +45,7 @@ class ShellComChannel(ComChannel):
         self._active = False
         self._stop = False
 
-    def setup(self, **kwargs: Dict[str, Any]) -> None:
+    def setup(self, **kwargs: Any) -> None:
         pass
 
     @property

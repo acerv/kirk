@@ -27,9 +27,11 @@ class TestJSONExporter:
             await exporter.save_file(list(), "")
 
         with pytest.raises(ValueError):
+            # pyrefly: ignore[bad-argument-type]
             await exporter.save_file(None, "")
 
         with pytest.raises(ValueError):
+            # pyrefly: ignore[bad-argument-type]
             await exporter.save_file([0, 1], None)
 
     async def test_save_file(self, tmpdir):

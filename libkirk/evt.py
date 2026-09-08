@@ -214,7 +214,9 @@ class EventsHandler:
 
             ievt = self._get_event("internal_error")
             if ievt:
-                name = getattr(task, 'get_name', lambda: getattr(task, '__qualname__', str(task)))()
+                name = getattr(
+                    task, "get_name", lambda: getattr(task, "__qualname__", str(task))
+                )()
                 err_tasks = ievt.create_tasks([err], name)
                 await asyncio.gather(*err_tasks)
         finally:

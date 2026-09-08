@@ -42,9 +42,11 @@ def test_register_errors():
         pass
 
     with pytest.raises(ValueError):
+        # pyrefly: ignore[bad-argument-type]
         libkirk.events.register(None, funct)
 
     with pytest.raises(ValueError):
+        # pyrefly: ignore[bad-argument-type]
         libkirk.events.register("myevent", None)
 
 
@@ -110,6 +112,7 @@ async def test_fire_errors():
     Test fire method during errors.
     """
     with pytest.raises(ValueError):
+        # pyrefly: ignore[bad-argument-type]
         await libkirk.events.fire(None, "prova")
 
 
@@ -126,9 +129,11 @@ def test_unregister_errors():
     Test unregister method during errors.
     """
     with pytest.raises(ValueError):
+        # pyrefly: ignore[bad-argument-type]
         libkirk.events.unregister("", None)
 
     with pytest.raises(ValueError):
+        # pyrefly: ignore[bad-argument-type]
         libkirk.events.unregister("not_registered", None)
 
 
@@ -143,6 +148,7 @@ def test_unregister_entire_event():
     libkirk.events.register("myevent", funct)
     assert libkirk.events.is_registered("myevent")
 
+    # pyrefly: ignore[bad-argument-type]
     libkirk.events.unregister("myevent", None)
     assert not libkirk.events.is_registered("myevent")
 
@@ -226,7 +232,7 @@ async def test_fire():
     await run()
 
     while len(called) < times:
-        asyncio.sleep(1e-3)
+        await asyncio.sleep(1e-3)
 
     called.sort()
     for i in range(times):

@@ -6,6 +6,7 @@ import os
 import signal
 import subprocess
 import time
+from typing import Any, List
 
 import pytest
 
@@ -43,6 +44,7 @@ class TestLTX:
         stdin = os.open(infile, os.O_RDWR | os.O_NONBLOCK)
         stdout = os.open(outfile, os.O_RDWR)
 
+        assert TEST_LTX_BINARY is not None
         proc = subprocess.Popen(
             TEST_LTX_BINARY,
             stdin=stdin,
@@ -251,7 +253,7 @@ class TestLTX:
         data = b"AaXa\x00\x01\x02Zz" * 1024
         pfile = tmp_path / "file.bin"
 
-        requests = []
+        requests: List[Any] = []
         requests.append(Requests.version())
         requests.append(Requests.set_file(str(pfile), data))
         requests.append(Requests.ping())
@@ -277,6 +279,7 @@ async def com(tmpdir):
     stdin = os.open(infile, os.O_RDONLY | os.O_NONBLOCK)
     stdout = os.open(outfile, os.O_RDWR)
 
+    assert TEST_LTX_BINARY is not None
     proc = subprocess.Popen(
         TEST_LTX_BINARY,
         stdin=stdin,
@@ -284,6 +287,7 @@ async def com(tmpdir):
     )
 
     obj = next((c for c in libkirk.com.get_channels() if c.name == "ltx"), None)
+    assert obj is not None
     obj.setup(cwd=str(tmpdir), env=dict(HELLO="WORLD"), infile=infile, outfile=outfile)
 
     yield obj
@@ -300,7 +304,7 @@ class TestLTXComChannel(_TestComChannel):
     Test LTXComChannel implementation.
     """
 
-    async def test_fetch_file_stop(self):
+    async def test_fetch_file_stop(self, com):
         pytest.skip(reason="LTX doesn't support stop for GET_FILE")
 
 

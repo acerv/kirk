@@ -205,7 +205,7 @@ class SSHComChannel(ComChannel):
 
         return max_sessions
 
-    def setup(self, **kwargs: Dict[str, Any]) -> None:
+    def setup(self, **kwargs: Any) -> None:
         if not importlib.util.find_spec("asyncssh"):
             raise CommunicationError("'asyncssh' library is not available")
 

@@ -4,6 +4,7 @@ Test GenericSUT implementations.
 
 import asyncio
 import logging
+from typing import Any, Dict, Optional
 
 import pytest
 
@@ -107,7 +108,7 @@ class _TestSUT:
     # - is root
 
 
-class MockChannel:
+class MockChannel(libkirk.com.ComChannel):
     """
     Mock communication channel for testing SUT methods.
     """
@@ -118,11 +119,17 @@ class MockChannel:
     def set_response(self, cmd, returncode=0, stdout=""):
         self._responses[cmd] = {"returncode": returncode, "stdout": stdout}
 
-    async def run_command(self, command, **kwargs):
+    async def run_command(
+        self,
+        command: str,
+        cwd: Optional[str] = None,
+        env: Optional[Dict[str, str]] = None,
+        iobuffer: Optional[IOBuffer] = None,
+    ) -> Optional[Dict[str, Any]]:
         for key, resp in self._responses.items():
             if key in command:
                 return resp
-        return {"returncode": 0, "stdout": ""}
+        return {"returncode": 0, "stdout": "", "command": command, "exec_time": 0.0}
 
 
 class MockSUT(libkirk.sut.SUT):

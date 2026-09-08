@@ -41,6 +41,7 @@ class TestTempDir:
 
         os.sync()
 
+        assert tempdir is not None
         total = 0
         for _, dirs, _ in os.walk(os.path.join(tempdir.abspath, "..")):
             for mydir in dirs:

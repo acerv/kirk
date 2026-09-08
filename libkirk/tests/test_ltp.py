@@ -281,6 +281,7 @@ class TestLTPFramework:
         framework = LTPFramework()
 
         with pytest.raises(ValueError):
+            # pyrefly: ignore[bad-argument-type]
             await framework.get_suites(None)
 
     async def test_find_command_errors(self, sut):
@@ -290,6 +291,7 @@ class TestLTPFramework:
         framework = LTPFramework()
 
         with pytest.raises(ValueError):
+            # pyrefly: ignore[bad-argument-type]
             await framework.find_command(None, "cmd")
 
         with pytest.raises(ValueError):
@@ -302,6 +304,7 @@ class TestLTPFramework:
         framework = LTPFramework()
 
         with pytest.raises(ValueError):
+            # pyrefly: ignore[bad-argument-type]
             await framework.find_suite(None, "suite")
 
         with pytest.raises(ValueError):

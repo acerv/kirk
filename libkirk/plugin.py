@@ -28,7 +28,7 @@ class Plugin:
 
     _name = ""
 
-    def setup(self, **kwargs: Dict[str, Any]) -> None:
+    def setup(self, **kwargs: Any) -> None:
         """
         Initialize plugin using configuration dictionary.
 

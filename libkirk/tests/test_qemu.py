@@ -52,7 +52,7 @@ class _TestQemuComChannel(_TestComChannel):
         with pytest.raises(KernelPanicError):
             await com.run_command("cat /tmp/panic.txt", iobuffer=iobuff)
 
-    async def test_fetch_file_stop(self):
+    async def test_fetch_file_stop(self, com):
         pytest.skip(reason="Coroutines don't support I/O file handling")
 
 
@@ -64,6 +64,7 @@ async def com_isa(tmpdir):
     iobuff = Printer()
 
     runner = next((c for c in libkirk.com.get_channels() if c.name == "qemu"), None)
+    assert runner is not None
     runner.setup(
         tmpdir=str(tmpdir),
         image=TEST_QEMU_IMAGE,
@@ -84,6 +85,7 @@ async def com_virtio(tmpdir):
     Qemu instance using VirtIO.
     """
     runner = next((c for c in libkirk.com.get_channels() if c.name == "qemu"), None)
+    assert runner is not None
     runner.setup(
         tmpdir=str(tmpdir),
         image=TEST_QEMU_IMAGE,
@@ -131,6 +133,8 @@ class TestQemuComChannelBusybox(_TestQemuComChannel):
         """
         Qemu instance using kernel/initrd.
         """
+        assert TEST_QEMU_KERNEL is not None
+        assert TEST_QEMU_BUSYBOX is not None
         runner = QemuComChannel()
         runner.setup(
             tmpdir=str(tmpdir),

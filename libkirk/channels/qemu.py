@@ -152,7 +152,7 @@ class QemuComChannel(ComChannel):
 
         return cmd
 
-    def setup(self, **kwargs: Dict[str, Any]) -> None:
+    def setup(self, **kwargs: Any) -> None:
         self._logger.info("Initialize Qemu")
 
         self._tmpdir = libkirk.types.dict_item(kwargs, "tmpdir", str, None)

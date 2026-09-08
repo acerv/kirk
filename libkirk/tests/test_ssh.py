@@ -47,8 +47,8 @@ async def com(config):
     """
     SSH communication object.
     """
-    obj = SSHComChannel()
     obj = next((c for c in libkirk.com.get_channels() if c.name == "ssh"), None)
+    assert obj is not None
     obj.setup(**config)
 
     yield obj
@@ -98,6 +98,7 @@ class _TestSSHComChannel(_TestComChannel):
         com.setup(**kwargs)
         await com.communicate()
         ret = await com.run_command("whoami")
+        assert ret is not None
 
         if enable == "1":
             assert ret["stdout"] == "root\n"

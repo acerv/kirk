@@ -34,7 +34,7 @@ class GenericSUT(SUT):
     def __init__(self) -> None:
         self._com = None
 
-    def setup(self, **kwargs: Dict[str, Any]) -> None:
+    def setup(self, **kwargs: Any) -> None:
         com_name = libkirk.types.dict_item(kwargs, "com", str, "shell")
         if not com_name:
             raise SUTError("Communication channel has not been defined")

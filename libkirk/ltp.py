@@ -164,7 +164,11 @@ class LTPFramework(Framework):
             if key in self._PRESET_ENV:
                 continue
 
-            if key in self.SUPPORTED_ENV or key.startswith("LTP_") or key.startswith("TST_"):
+            if (
+                key in self.SUPPORTED_ENV
+                or key.startswith("LTP_")
+                or key.startswith("TST_")
+            ):
                 self._env[key] = val
 
     async def _read_path(self, channel: ComChannel) -> Dict[str, str]:

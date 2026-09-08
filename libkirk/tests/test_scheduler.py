@@ -10,9 +10,13 @@ import sys
 
 import pytest
 
+from typing import Optional
+
 from libkirk.data import Suite, Test
-from libkirk.results import ResultStatus
+from libkirk.framework import Framework
+from libkirk.results import ResultStatus, TestResults
 from libkirk.errors import KernelPanicError, KernelTaintedError, KernelTimeoutError
+from libkirk.sut import SUT
 from libkirk.sut_base import GenericSUT
 from libkirk.scheduler import SuiteScheduler, TestScheduler
 
@@ -44,7 +48,9 @@ class MockTestScheduler(TestScheduler):
     and it doesn't write into /dev/kmsg
     """
 
-    async def _write_kmsg(self, test, results) -> None:
+    async def _write_kmsg(
+        self, test: Test, results: Optional[TestResults] = None
+    ) -> None:
         pass
 
 
@@ -53,13 +59,26 @@ class MockSuiteScheduler(SuiteScheduler):
     SuiteScheduler mock that traces SUT reboots.
     """
 
-    def __init__(self, **kwargs: dict) -> None:
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        sut: SUT,
+        framework: Framework,
+        suite_timeout: float = 0.0,
+        exec_timeout: float = 0.0,
+        max_workers: int = 1,
+    ) -> None:
+        super().__init__(
+            sut=sut,
+            framework=framework,
+            suite_timeout=suite_timeout,
+            exec_timeout=exec_timeout,
+            max_workers=max_workers,
+        )
         self._scheduler = MockTestScheduler(
-            sut=kwargs.get("sut", None),
-            framework=kwargs.get("framework", None),
-            timeout=kwargs.get("exec_timeout", 3600),
-            max_workers=kwargs.get("max_workers", 1),
+            sut=self._sut,
+            framework=self._framework,
+            timeout=exec_timeout,
+            max_workers=max_workers,
         )
         self._rebooted = 0
 
