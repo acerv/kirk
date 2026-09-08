@@ -47,6 +47,6 @@ Run tests on a Qemu VM disk image:
 
 .. code-block:: bash
 
-    kirk --com qemu:image=folder/image.qcow2:user=root:password=root \
+    kirk --com qemu:image=/path/to/image.qcow2:user=root:password=root \
          --sut default:com=qemu \
          --run-suite syscalls

@@ -43,7 +43,7 @@ Run tests over SSH using key authentication:
 
 .. code-block:: bash
 
-    kirk --com ssh:host=192.168.0.1:user=root:key_file=~/.ssh/id_rsa \
+    kirk --com ssh:host=192.168.0.1:user=root:key_file=/home/user/.ssh/id_rsa \
          --sut default:com=ssh \
          --run-suite syscalls
 
