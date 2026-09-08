@@ -4,24 +4,25 @@ Start using kirk
 ================
 
 The tool works out of the box by running ``kirk`` script.
-Minimum python requirement is 3.6+ and *optional* dependences are the following:
+Minimum python requirement is 3.6+ and *optional* dependencies are the following:
 
 - `asyncssh <https://pypi.org/project/asyncssh/>`_ for SSH support
 - `msgpack <https://pypi.org/project/msgpack/>`_ for LTX support
 
-kirk will detect if dependences are installed and activate the corresponding
+kirk will detect if dependencies are installed and activate the corresponding
 support.
 
 To use kirk via git repository:
 
 .. code-block:: bash
 
-    git clone git@github.com:acerv/kirk.git
-    export PATH=$PATH:$PWD/kirk
+    git clone https://github.com/linux-test-project/kirk.git
+    cd kirk
+    pip install .
 
     kirk --help
 
-kirk is also present in `pypi <https://pypi.org/project/kirk>`_ and it can be
+kirk is also present in `PyPI <https://pypi.org/project/kirk>`_ and it can be
 installed via ``pip`` command:
 
 .. code-block:: bash
@@ -63,6 +64,6 @@ It's possible to run a single command before running testing suites using
 .. code-block:: bash
 
     kirk --run-command ./setup_sut.sh \
-           --com qemu:image=folder/image.qcow \
-           --sut default:com=qemu
+         --com qemu:image=folder/image.qcow2 \
+         --sut default:com=qemu
 

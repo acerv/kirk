@@ -8,7 +8,8 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath(".."))
+curdir = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, os.path.abspath(os.path.join(curdir, "..")))
 
 project = "kirk"
 copyright = "2025, Linux Test Project"
@@ -41,13 +42,23 @@ def run_apidoc(_):
     """
     Autogenerate API documentation.
     """
+    doc_dir = os.path.abspath(os.path.dirname(__file__))
+    project_root = os.path.abspath(os.path.join(doc_dir, ".."))
+
     packages = {
-        "kirk": "../libkirk",
+        os.path.join(doc_dir, "kirk"): os.path.join(project_root, "libkirk"),
     }
 
     argv_list = []
     for output, source in packages.items():
-        argv_list.append(["-f", "-o", output, source, "../libkirk/tests/"])
+        argv_list.append([
+            "--implicit-namespaces",
+            "-f",
+            "-o",
+            output,
+            source,
+            os.path.join(project_root, "libkirk", "tests"),
+        ])
 
     try:
         # Sphinx 1.7+

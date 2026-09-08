@@ -4,7 +4,7 @@ What is Kirk?
 =============
 
 Kirk application is a fork of `runltp-ng <https://github.com/linux-test-project/runltp-ng>`_
-and it's the official `LTP <https://github.com/linux-test-project>`_ tests
+and it's the official `LTP <https://github.com/linux-test-project/ltp>`_ tests
 executor. It provides support for remote testing via Qemu, SSH, LTX, parallel
 execution and much more.
 

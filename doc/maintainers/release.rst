@@ -19,5 +19,5 @@ These are the steps which need to be completed before a new release:
 * verify that CI has been completed and passing after pushing
 * manually test Qemu support via ``libkirk/tests/test_qemu.py``
 * create a package via ``python -m build`` command
-* push package in pypi via ``twine upload dist/kirk-<version>.tar.gz`` command
+* push package to PyPI via ``twine upload dist/kirk-<version>.tar.gz`` command
 * upgrade kirk version inside the LTP project

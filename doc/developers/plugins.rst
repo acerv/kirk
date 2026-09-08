@@ -46,7 +46,7 @@ available channels and get the one we need, as follows:
 
    def setup(self, **kwargs: Dict[str, Any]) -> None:
        self._ssh = next(
-           (c for in libkirk.com.get_channels() if c.name == "ssh_host0"),
+           (c for c in libkirk.com.get_channels() if c.name == "ssh_host0"),
            None,
        )
 
@@ -55,7 +55,7 @@ communicate with the System Under Test via ``get_channel()`` API.
 
 .. code-block:: python
 
-   def get_channel() -> ComChannel:
+   def get_channel(self) -> ComChannel:
       return self._ssh
 
 Practical example
@@ -138,7 +138,7 @@ We can easily achieve this scenario with the following implementation:
             await self._ssh.ensure_communicate(iobuffer=iobuffer)
 
         async def stop(self, iobuffer: Optional[IOBuffer] = None) -> None:
-            # Stop any operation in our SUT. This can be requires in any moment
+            # Stop any operation in our SUT. This can be required at any moment
             # during tests run
             if not await self.is_running():
                 return
