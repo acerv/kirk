@@ -24,7 +24,6 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.graphviz",
     "sphinx.ext.inheritance_diagram",
-    "myst_parser",
 ]
 
 templates_path = ["_templates"]
