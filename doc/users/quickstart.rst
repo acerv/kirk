@@ -42,12 +42,12 @@ Run tests in parallel using 16 workers:
 
     kirk --run-suite syscalls --workers 16
 
-Pass environment variables (colon-separated ``KEY=VALUE`` pairs):
+Pass environment variables for LTP tests from the shell:
 
 .. code-block:: bash
 
-    kirk --run-suite net.features \
-         --env 'VIRT_PERF_THRESHOLD=180:LTP_NET_FEATURES_IGNORE_PERFORMANCE_FAILURE=1'
+    LTP_NET_FEATURES_IGNORE_PERFORMANCE_FAILURE=1 \
+    kirk --run-suite net.features
 
 Run a custom command before executing the test suite:
 
