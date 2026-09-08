@@ -526,6 +526,7 @@ class ParallelUserInterface(ConsoleUserInterface):
             await self._print("kernel panic", color=self.RED)
         else:
             msg, col = self._result_color(results)
+            await self._print(msg, color=col, end="")
             if self._kernel_tainted:
                 await self._print(" | ", end="")
                 await self._print("tainted", color=self.YELLOW, end="")
