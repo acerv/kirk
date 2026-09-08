@@ -86,14 +86,50 @@ class EventsHandler:
 
     def __init__(self) -> None:
         self._logger = logging.getLogger("kirk.events")
-        self._tasks = asyncio.Queue()
-        self._lock = asyncio.Lock()
+        self._tasks: Optional[asyncio.Queue] = None
+        self._lock: Optional[asyncio.Lock] = None
         self._events: Dict[str, Event] = {}
         self._stop = False
 
         # register a default event used to notify internal
         # errors in the our application
         self._events["internal_error"] = Event()
+
+    def _get_queue(self) -> asyncio.Queue:
+        if self._tasks is None:
+            self._tasks = asyncio.Queue()
+        else:
+            loop = getattr(self._tasks, "_loop", None)
+            if loop is not None:
+                try:
+                    curr_loop = (
+                        asyncio.get_running_loop()
+                        if hasattr(asyncio, "get_running_loop")
+                        else asyncio.get_event_loop()
+                    )
+                    if loop is not curr_loop or loop.is_closed():
+                        self._tasks = asyncio.Queue()
+                except (AttributeError, RuntimeError):
+                    pass
+        return self._tasks
+
+    def _get_lock(self) -> asyncio.Lock:
+        if self._lock is None:
+            self._lock = asyncio.Lock()
+        else:
+            loop = getattr(self._lock, "_loop", None)
+            if loop is not None:
+                try:
+                    curr_loop = (
+                        asyncio.get_running_loop()
+                        if hasattr(asyncio, "get_running_loop")
+                        else asyncio.get_event_loop()
+                    )
+                    if loop is not curr_loop or loop.is_closed():
+                        self._lock = asyncio.Lock()
+                except (AttributeError, RuntimeError):
+                    pass
+        return self._lock
 
     def _get_event(self, name: str) -> Optional[Event]:
         """
@@ -107,6 +143,10 @@ class EventsHandler:
         """
         self._logger.info("Reset events queue")
         self._events.clear()
+        self._events["internal_error"] = Event()
+        self._tasks = None
+        self._lock = None
+        self._stop = False
 
     def is_registered(self, event_name: str) -> bool:
         """
@@ -189,7 +229,7 @@ class EventsHandler:
             return
 
         for task in evt.create_tasks(*args, **kwargs):
-            await self._tasks.put(task)
+            await self._get_queue().put(task)
 
     async def _consume(self) -> None:
         """
@@ -197,7 +237,8 @@ class EventsHandler:
         """
         # asyncio.queue::get() will wait until an item is available
         # without blocking the application
-        task = await self._tasks.get()
+        queue = self._get_queue()
+        task = await queue.get()
         if not task:
             return
 
@@ -220,7 +261,7 @@ class EventsHandler:
                 err_tasks = ievt.create_tasks([err], name)
                 await asyncio.gather(*err_tasks)
         finally:
-            self._tasks.task_done()
+            queue.task_done()
 
     async def stop(self) -> None:
         """
@@ -230,14 +271,17 @@ class EventsHandler:
 
         self._stop = True
 
-        # indicate producer is done
-        await self._tasks.put(None)
+        queue = self._get_queue()
+        lock = self._get_lock()
 
-        async with self._lock:
+        # indicate producer is done
+        await queue.put(None)
+
+        async with lock:
             pass
 
         # consume the last tasks
-        while not self._tasks.empty():
+        while not queue.empty():
             await self._consume()
 
         self._logger.info("Event loop stopped")
@@ -249,7 +293,7 @@ class EventsHandler:
         self._stop = False
 
         try:
-            async with self._lock:
+            async with self._get_lock():
                 self._logger.info("Starting event loop")
 
                 while not self._stop:
