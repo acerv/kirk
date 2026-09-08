@@ -152,7 +152,7 @@ def _iterate_config(value: str) -> int:
 
     try:
         ret = int(value)
-    except TypeError as err:
+    except (ValueError, TypeError) as err:
         raise argparse.ArgumentTypeError("Invalid number") from err
 
     return max(1, ret)
@@ -193,7 +193,7 @@ def _finjection_config(value: str) -> int:
 
     try:
         ret = int(value)
-    except TypeError as err:
+    except (ValueError, TypeError) as err:
         raise argparse.ArgumentTypeError("Invalid number") from err
 
     return max(0, min(100, ret))
@@ -208,7 +208,7 @@ def _finterval_config(value: str) -> int:
 
     try:
         ret = int(value)
-    except TypeError as err:
+    except (ValueError, TypeError) as err:
         raise argparse.ArgumentTypeError("Invalid number") from err
 
     return max(1, ret)
