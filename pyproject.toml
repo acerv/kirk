@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "kirk"
 dynamic = ["version"]
 description = "Linux Test Project tests executor"
-readme = "README.md"
+readme = "README.rst"
 license = {file = "LICENSE"}
 requires-python = ">=3.6"
 keywords = ["testing", "linux", "development", "ltp", "linux-test-project"]
