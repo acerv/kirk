@@ -499,7 +499,7 @@ def run(cmd_args: Optional[List[str]] = None) -> None:
         "--randomize",
         "-R",
         action="store_true",
-        help="Force parallelization execution of all tests",
+        help="Randomize execution order of tests",
     )
     exec_opts.add_argument(
         "--runtime",
