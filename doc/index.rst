@@ -11,13 +11,7 @@
    users/ssh
    users/ltx
    users/qemu
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: For developers
-
-   developers/plugins
+   users/plugins
 
 .. toctree::
    :maxdepth: 2
@@ -45,13 +39,8 @@ For users
 :doc:`users/qemu`
    How to configure Qemu
 
-For developers
---------------
-
-.. descriptions here are active
-
-:doc:`developers/plugins`
-   How to develop a new SUT
+:doc:`users/plugins`
+   Customization with plugins
 
 For maintainers
 ---------------

@@ -1,7 +1,7 @@
 .. SPDX-License-Identifier: GPL-2.0-or-later
 
-Plugin System
-=============
+Customization with plugins
+==========================
 
 Kirk provides an extensible plugin system to support custom testing
 environments and communication protocols. When default communication channels
