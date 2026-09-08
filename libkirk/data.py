@@ -57,7 +57,7 @@ class Test:
     def __repr__(self) -> str:
         return (
             f"name: '{self._name}', "
-            f"commmand: '{self._cmd}', "
+            f"command: '{self._cmd}', "
             f"arguments: {self._args}, "
             f"cwd: '{self._cwd}', "
             f"environ: '{self._env}', "
