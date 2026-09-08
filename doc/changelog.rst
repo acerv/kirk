@@ -6,164 +6,231 @@ Changelog
 v4.2.0 (2026-09-08)
 -------------------
 
-* Add ``--dry-run`` option to preview test execution
-* Add configurable fault injection interval option (``--fault-injection-interval``)
-* Persist and export partial test suite results when aborted mid-suite
-* Fix ``--exec-timeout`` not killing tests in the shell channel
-* Fix JSON report file being opened in read/write instead of write-only mode
-* Fix incorrect log message when test parameters are missing in LTP metadata
-* Fix exception handling in the event subsystem
-* Fix ``--randomize`` command-line description
-* Move ``IOBuffer`` implementations inside the ``sut`` module
-* Use ``IntEnum`` for kernel status in scheduler
-* Major documentation restructuring and expansion (quickstart, SSH, LTX, QEMU, plugins)
-* Improve test suite coverage and resolve flaky tests
+**What's Changed**
+
+- Add ``--dry-run`` option to preview tests before execution
+- Add configurable fault injection interval option
+- Persist and export partial results when a session is aborted mid-suite
+- Fix ``--exec-timeout`` not killing tests in the shell channel
+- Fix JSON report file being opened in read/write instead of write-only mode
+- Fix incorrect log message when test parameters are missing in LTP metadata
+- Fix exception handling in the event subsystem
+- Fix ``--randomize`` command-line description
+- Major documentation update (quickstart, SSH, LTX, QEMU, and plugins)
+- Move IOBuffer implementations inside the sut module
+- Improve test suite coverage and fix flaky test cases
+
+
+**New Contributors**
+
+* `@nhitar <https://github.com/nhitar>`__ made their first contribution in `#98 <https://github.com/linux-test-project/kirk/pull/98>`__
+
+**Full Changelog**: `v4.1.0...v4.2.0 <https://github.com/linux-test-project/kirk/compare/v4.1.0...v4.2.0>`__
 
 v4.1.0 (2026-03-30)
 -------------------
 
-* Support LTP network tests configurations
-* Remove unused ``PASSWD`` and ``RUSER`` variables in LTP framework
-* Ensure test results dictionaries are not shared across instances
-* Fix mismatch between event and event handler name in monitor
-* Fix potential ``ValueError`` on ``task_done()`` in events subsystem
-* Fix wrong return type annotation in SUT module
+**What's Changed**
+
+* ltp: support network tests configurations by `@acerv <https://github.com/acerv>`__ in `#95 <https://github.com/linux-test-project/kirk/pull/95>`__
+* ltp: Remove unused PASSWD, RUSER variables by `@pevik <https://github.com/pevik>`__ in `#96 <https://github.com/linux-test-project/kirk/pull/96>`__
+* monitor: fix mismatch between event and its name
+* minor fixes and code stabilization
+
+**Full Changelog**: `v4.0.0...v4.1.0 <https://github.com/linux-test-project/kirk/compare/v4.0.0...v4.1.0>`__
 
 v4.0.0 (2026-02-23)
 -------------------
 
-* Major performance optimizations across scheduler, session, events, and UI
-* Optimize internal scheduler algorithm to reduce test suite loading times
-* Add ``/proc/cmdline`` printing in target information summary
-* Add slot release lock and loop cleanup fixes in LTX communication
-* Fix potential deadlock during SUT reboot in scheduler
-* Fix race condition in SUT ``qsize()``
-* Fix fire-and-forget buffer write issue in SSH channel
-* Fix returncode handling for processes in shell channel
-* Remove deprecated ``--env`` option
+**What's Changed**
+
+* Remove ``--env`` option by `@acerv <https://github.com/acerv>`__ in `#89 <https://github.com/linux-test-project/kirk/pull/89>`__
+* pyproject: include sub-packages in pip package by `@roxell <https://github.com/roxell>`__ in `#91 <https://github.com/linux-test-project/kirk/pull/91>`__
+* libkirk: Print /proc/cmdline by `@pevik <https://github.com/pevik>`__ in `#92 <https://github.com/linux-test-project/kirk/pull/92>`__
+* ui: simplify report by `@acerv <https://github.com/acerv>`__ in `#93 <https://github.com/linux-test-project/kirk/pull/93>`__
+* many bugs fixes and code optimizations
+
+
+**New Contributors**
+
+* `@roxell <https://github.com/roxell>`__ made their first contribution in `#91 <https://github.com/linux-test-project/kirk/pull/91>`__
+
+**Full Changelog**: `v3.2.1...v4.0 <https://github.com/linux-test-project/kirk/compare/v3.2.1...v4.0>`__
 
 v3.2.1 (2026-01-28)
 -------------------
 
-* Fix ``LTPROOT`` retrieval in LTP framework
-* Documentation updates for upgrading kirk inside LTP after release
+**What's Changed**
+
+* ltp: correctly fetch LTPROOT by `@acerv <https://github.com/acerv>`__ in `#88 <https://github.com/linux-test-project/kirk/pull/88>`__
+
+
+**Full Changelog**: `v3.2...v3.2.1 <https://github.com/linux-test-project/kirk/compare/v3.2...v3.2.1>`__
 
 v3.2 (2026-01-12)
 -----------------
 
-* Add ``--optimize-sut`` option
-* Refactor ``Framework`` to be an internal session object rather than a plugin
-* Improve test suite performance and reduce CI overhead
+**What's Changed**
+
+* Framework is no longer a plugin by `@acerv <https://github.com/acerv>`__ in `#86 <https://github.com/linux-test-project/kirk/pull/86>`__
+* sut: add ``--optimize-sut`` option by `@acerv <https://github.com/acerv>`__ in `#87 <https://github.com/linux-test-project/kirk/pull/87>`__
+* stabilized tests execution for CI
+
+**Full Changelog**: `v3.1...v3.2 <https://github.com/linux-test-project/kirk/compare/v3.1...v3.2>`__
 
 v3.1 (2025-12-10)
 -----------------
 
-* Implement forceful stop on session interruption
-* Ignore UTF-8 decoding errors during SSH connection setup
-* Stabilize SSH ``MaxSessions`` detection
-* Document semantic versioning policy
-* Fix docstrings across ``libkirk``
+**What's Changed**
+
+* ssh: stabilize SSH MaxSessions read by `@acerv <https://github.com/acerv>`__ in `#82 <https://github.com/linux-test-project/kirk/pull/82>`__
+* ssh: ignore decoding errors in utf-8 during connection by `@acerv <https://github.com/acerv>`__ in `#84 <https://github.com/linux-test-project/kirk/pull/84>`__
+* session: implement forcibly stop by `@acerv <https://github.com/acerv>`__ in `#83 <https://github.com/linux-test-project/kirk/pull/83>`__
+* updated documentation
+
+**Full Changelog**: `v3.0...v3.1 <https://github.com/linux-test-project/kirk/compare/v3.0...v3.1>`__
 
 v3.0 (2025-10-23)
 -----------------
 
-* Introduce new communication channels architecture (Shell, SSH, LTX, Qemu)
-* Redesign SUT API and communication channel API (``libkirk.com``)
-* Add ``--com`` and ``--plugins`` command-line options
-* Make plugins cloneable
-* Set ``CONF`` status for timed-out tests in scheduler
-* Add internal architecture and plugins sections to documentation
-* Enable testing on Python 3.14
+**What's Changed**
+
+* Support SUT customizations via plugins by `@acerv <https://github.com/acerv>`__ in `#71 <https://github.com/linux-test-project/kirk/pull/71>`__
+* scheduler: set CONF status for timed out tests by `@acerv <https://github.com/acerv>`__ in `#81 <https://github.com/linux-test-project/kirk/pull/81>`__
+
+
+**Full Changelog**: `v2.3...v3.0 <https://github.com/linux-test-project/kirk/compare/v2.3...v3.0>`__
 
 v2.3 (2025-09-22)
 -----------------
 
-* Catch ``ConnectionError`` during SSH communication
-* Respect user-defined ``LTP_TIMEOUT_MUL`` environment variable
-* Make Qemu ``hvc0`` console parameter explicit
-* Complete strong typing annotations across all modules
-* Add Ruff configuration and linting integration
+**What's Changed**
+
+* ltp: don't override LTP_TIMEOUT_MUL if set by user by `@wangli5665 <https://github.com/wangli5665>`__ in `#70 <https://github.com/linux-test-project/kirk/pull/70>`__
+* Make the hvc0 parameter explicit by `@grisu48 <https://github.com/grisu48>`__ in `#74 <https://github.com/linux-test-project/kirk/pull/74>`__
+* ssh: catch ConnectionError in communicate by `@acerv <https://github.com/acerv>`__ in `#76 <https://github.com/linux-test-project/kirk/pull/76>`__
+* documentation improvements
+* improve strong typing support via ruff and pyrefly
+
+
+**New Contributors**
+
+* `@grisu48 <https://github.com/grisu48>`__ made their first contribution in `#74 <https://github.com/linux-test-project/kirk/pull/74>`__
+
+**Full Changelog**: `v2.2.2...v2.3 <https://github.com/linux-test-project/kirk/compare/v2.2.2...v2.3>`__
 
 v2.2.2 (2025-08-26)
 -------------------
 
-* Fix data fetch and empty match object checks in Qemu SUT
-* Fix and re-enable LTX tests using ``KILL`` command
-* Add maintainer release documentation
+Fix a Qemu critical bug that was introduced in v2.2.1 and it was making Qemu support unusable:
+* `fea2f6363a77ef4f7740dbe7e162ccf21cd90b4b <https://github.com/linux-test-project/kirk/commit/fea2f6363a77ef4f7740dbe7e162ccf21cd90b4b>`__
+
+**Full Changelog**: `v2.2.1...v2.2.2 <https://github.com/linux-test-project/kirk/compare/v2.2.1...v2.2.2>`__
 
 v2.2.1 (2025-08-25)
 -------------------
 
-* Comprehensive migration to Ruff for linting and formatting
-* Add static type checking and complete type annotations
-* Rename ``events`` module to ``evt``
-* Stabilize SSH and LTX test suites under CI
+**What's Changed**
+
+This minor version introduces significant changes to the code due to the implementation of strong typing. The decision to add strong typing to the Python code stems from the need to identify bugs before introducing new features by cross-checking multiple types and ensuring we do not inadvertently mix them up. This is achieved using pyrefly and ruff, which are currently among the fastest and most comprehensive tools available.
+
+* Static typing support by `@acerv <https://github.com/acerv>`__ in `#68 <https://github.com/linux-test-project/kirk/pull/68>`__
+* complete dict and list typing by `@acerv <https://github.com/acerv>`__ in `24d85e0c9fe0a4ba114b0c26dba400da03d2e225 <https://github.com/linux-test-project/kirk/commit/24d85e0c9fe0a4ba114b0c26dba400da03d2e225>`__
+
+**Full Changelog**: `v2.2...v2.2.1 <https://github.com/linux-test-project/kirk/compare/v2.2...v2.2.1>`__
 
 v2.2 (2025-08-18)
 -----------------
 
-* Introduce ``errors`` module for structured exception handling
-* Add fault injection support to SUT and CLI
-* Add test parallelization support in session and UI
-* Add script to convert results JSON to logs
-* Respect ``LTPROOT`` from environment
-* Output test ending messages to ``/dev/kmsg``
+**What's Changed**
+
+* scheduler: fix wrong execution time on runtime by `@acerv <https://github.com/acerv>`__ in `#55 <https://github.com/linux-test-project/kirk/pull/55>`__
+* Respect LTPROOT from environment if set by `@dev-japo <https://github.com/dev-japo>`__ in `#56 <https://github.com/linux-test-project/kirk/pull/56>`__
+* ui: rearrange UI to show information in a better way by `@acerv <https://github.com/acerv>`__ in `#57 <https://github.com/linux-test-project/kirk/pull/57>`__
+* ltp: leave quotes when parsing commands in runtest files by `@acerv <https://github.com/acerv>`__ in `#61 <https://github.com/linux-test-project/kirk/pull/61>`__
+* ui: make parallel ui less interactive by `@acerv <https://github.com/acerv>`__ in `#59 <https://github.com/linux-test-project/kirk/pull/59>`__
+* ltp: use regex to parse test arguments in runtest file by `@acerv <https://github.com/acerv>`__ in `#62 <https://github.com/linux-test-project/kirk/pull/62>`__
+* New kirk documentation by `@acerv <https://github.com/acerv>`__ in `#63 <https://github.com/linux-test-project/kirk/pull/63>`__
+* kirk: Add results JSON to logs convertor script by `@wangli5665 <https://github.com/wangli5665>`__ in `#53 <https://github.com/linux-test-project/kirk/pull/53>`__
+* Fault injection support by `@acerv <https://github.com/acerv>`__ in `#66 <https://github.com/linux-test-project/kirk/pull/66>`__
+
+
+**New Contributors**
+
+* `@dev-japo <https://github.com/dev-japo>`__ made their first contribution in `#56 <https://github.com/linux-test-project/kirk/pull/56>`__
+* `@wangli5665 <https://github.com/wangli5665>`__ made their first contribution in `#53 <https://github.com/linux-test-project/kirk/pull/53>`__
+
+**Full Changelog**: `v2.1...v2.2 <https://github.com/linux-test-project/kirk/compare/v2.1...v2.2>`__
 
 v2.1 (2025-05-27)
 -----------------
 
-* Add support for ``known_hosts`` configuration in SSH
-* Improve exception handling in SSH channel
-* Complete UI events properly on ``KeyboardInterrupt``
-* Remove external frameworks support
+* ssh module now supports ``known_hosts``
+* removed external frameworks implementation (`515a5053170a04d3b6f9db0be7217f66fb6cfcb8 <https://github.com/linux-test-project/kirk/commit/515a5053170a04d3b6f9db0be7217f66fb6cfcb8>`__, `#44 <https://github.com/linux-test-project/kirk/pull/44>`__)
+* fix: complete ui events on keyboard interrupt
+* fix: correctly handle all ssh errors
 
 v2.0 (2025-04-16)
 -----------------
 
-* Add ``--monitor`` option for event monitoring
-* Add ``--runtime``, ``--randomize``, ``--suite-iterate``, and ``--run-pattern`` options
-* Introduce ``io`` module with ``AsyncFile``
-* Support ordered event firing in events subsystem
-* Add JSON-to-HTML results conversion utility
-* Improve session graceful stop handling on interrupts
+**What's Changed**
+
+* add script to convert kirk output to HTML
+* new option ``--run-pattern``
+* new option ``--suite-iterate``
+* new option ``--randomize``
+* new option ``--monitor``
+* new option ``--runtime``
+* introduced introducing ``<value> + suffix`` for timeout values
+* much faster user interface
+* fix tainted stderr handling
+* gracefully stop after user interrupt
+* many clean-ups
 
 v1.5 (2025-02-12)
 -----------------
 
-* Register missing event handler for suite timeout
-* Aggregate test results statistics across all executed test suites
-* Transition packaging configuration to ``pyproject.toml``
-* Expand Python version support
+**What's Changed**
+
+* Fix stats calculation of aggregate results by `@jkchen1095 <https://github.com/jkchen1095>`__ in `#26 <https://github.com/linux-test-project/kirk/pull/26>`__
+* libkirk/events: register the event handler for suite_timeout by `@Chunyu-Hu <https://github.com/Chunyu-Hu>`__ in `#30 <https://github.com/linux-test-project/kirk/pull/30>`__
+* using toml format for setuptools
+* fixed typos
+
+**Full Changelog**: `v1.4...v1.5 <https://github.com/linux-test-project/kirk/compare/v1.4...v1.5>`__
 
 v1.4 (2024-07-26)
 -----------------
 
-* Package metadata and setuptools build script improvements
-* Display version information via standard CLI conventions
+- fixed setuptools information
+- pypi package
 
-v1.3 (2024-06-07)
+v1.3 (2024-06-10)
 -----------------
 
-* Fix SSH command execution output redirection and live streaming
-* Prevent crash when stopping tests during SSH execution
-* Document environment variable passing in README
-* Fix test collection in Linux kselftests module
+**What's Changed**
 
-v1.2 (2023-11-29)
+* Fix cgroup kselftests collection by `@acerv <https://github.com/acerv>`__ in `#14 <https://github.com/linux-test-project/kirk/pull/14>`__
+* Kselftests fix test name by `@acerv <https://github.com/acerv>`__ in `#15 <https://github.com/linux-test-project/kirk/pull/15>`__
+* Wait for SSH command to complete after execution by `@acerv <https://github.com/acerv>`__ in `#16 <https://github.com/linux-test-project/kirk/pull/16>`__
+* Fix SSH execution not redirecting output properly by `@acerv <https://github.com/acerv>`__ in `#17 <https://github.com/linux-test-project/kirk/pull/17>`__
+* SSH module is not showing live stdout/stderr by `@acerv <https://github.com/acerv>`__ in `#18 <https://github.com/linux-test-project/kirk/pull/18>`__
+
+
+**Full Changelog**: `v1.2...v1.3 <https://github.com/linux-test-project/kirk/compare/v1.2...v1.3>`__
+
+v1.2 (2024-01-09)
 -----------------
 
-* Replace ``epoll()`` usage with threaded I/O in LTX communication
-* Add command search capabilities to test frameworks
-* Fix runtest file argument parsing with quotes
-* Improve Qemu login prompt recognition
-* Add build system integration for LTP
+- show both stdout and stderr when executing tests on host
+- support for external commands on different SUTs
+- warning message when SUT doesn't support parallel execution
+- more stable epoll() communication with LTX
+- minor fixes
+- updated documentation
 
-v1.1 (2023-08-17)
-------------------
+v1.1 (2023-09-15)
+-----------------
 
-* Initial public release as the LTP test executor
-* Support SUT backends: Host, SSH, QEMU, and LTX
-* Support LTP, Linux kselftest, and liburing test frameworks
-* Support parallel test execution and test timeouts
-* Support kernel panic and tainted kernel detection
-* Export structured test execution results to JSON
+- fix RuntimeError exception when SIGINT is received
+- filter LTP tests by max_runtime
