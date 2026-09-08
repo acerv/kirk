@@ -22,6 +22,13 @@
    maintainers/architecture
    kirk/modules
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: About
+
+   changelog
+
 For users
 ---------
 
@@ -55,3 +62,12 @@ For maintainers
 
 :doc:`kirk/modules`
    Internal kirk API
+
+About
+-----
+
+.. descriptions here are active
+
+:doc:`changelog`
+   List of changes across all releases
+
