@@ -8,6 +8,8 @@
    :caption: For users
 
    users/quickstart
+   users/ssh
+   users/ltx
    users/qemu
 
 .. toctree::
@@ -33,6 +35,12 @@ For users
 
 :doc:`users/quickstart`
    How to start using kirk
+
+:doc:`users/ssh`
+   How to configure SSH communication
+
+:doc:`users/ltx`
+   How to configure LTX communication
 
 :doc:`users/qemu`
    How to configure Qemu

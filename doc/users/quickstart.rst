@@ -6,8 +6,8 @@ Start using kirk
 The tool works out of the box by running ``kirk`` script.
 Minimum python requirement is 3.6+ and *optional* dependencies are the following:
 
-- `asyncssh <https://pypi.org/project/asyncssh/>`_ for SSH support
-- `msgpack <https://pypi.org/project/msgpack/>`_ for LTX support
+- :doc:`ssh` (requires `asyncssh <https://pypi.org/project/asyncssh/>`_)
+- :doc:`ltx` (requires `msgpack <https://pypi.org/project/msgpack/>`_)
 
 kirk will detect if dependencies are installed and activate the corresponding
 support.
